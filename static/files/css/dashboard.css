@@ -92,3 +92,15 @@ a.folder-link {
 .breadcrumb .breadcrumb-item.active {
   color: #0a0a0a;
 }
+
+.delete-icon {
+  position: absolute;
+  right: 20px;
+  margin-top: 5px;
+}
+
+.rename-icon {
+  position: absolute;
+  right: 70px;
+  margin-top: 5px;
+}
