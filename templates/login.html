@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{url_for('static', filename = 'files/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename = 'files/css/style.css')}}">
+</head>
+<body>
+    <div class="demo-container">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 col-12 mx-auto">
+              <div class="p-5 bg-white bgradius shadow-lg">
+                <h2 class="mb-2 text-center">Sign In</h2>
+                {% with messages = get_flashed_messages(with_categories = true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div id="flash" class="alert alert-{{category}}">{{message}}</div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+                <form action="/login" method="POST" autocomplete="off">
+                  <label class="font-500">Email</label>
+                  <input type="email" name="email" class="form-control form-control-lg mb-3" required>
+                   <label class="font-500">Password</label>
+                  <input type="password" name="password" class="form-control form-control-lg" required>
+                  <p class="m-0 py-4"><a href="" class="text-muted">Forget Password?</a></p>
+                  <button class="btn btn-success btn-lg w-100 shadow-lg btnrad">SIGN IN</button>
+                </form>         
+              </div>        
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        function hideAlert() {
+          var alert = document.querySelector('.alert');
+          alert.style.transition = 'opacity 2s';
+          alert.style.opacity = '0';
+          setTimeout(function() {
+            alert.style.display = 'none';
+          }, 2000);
+        }
+
+        if (document.querySelector('.alert')) {
+            setTimeout(hideAlert, 3000);
+        }
+
+      </script>
+</body>
+</html>
