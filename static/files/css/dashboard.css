@@ -76,3 +76,15 @@ a.folder-link {
   margin-right: 0.5em;
   color: #46494e;
 }
+
+.delete-icon {
+  position: absolute;
+  right: 20px;
+  margin-top: 5px;
+}
+
+.rename-icon {
+  position: absolute;
+  right: 70px;
+  margin-top: 5px;
+}

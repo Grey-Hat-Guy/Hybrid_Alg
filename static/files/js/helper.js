@@ -27,7 +27,7 @@ async function showFolders(folderkey) {
     jpg: "fa-image",
     png: "fa-image",
     gif: "fa-image",
-    py: "fa-file-code",
+    py: "fa-file-code"
   };
 
   if (res.status === 200) {
@@ -72,6 +72,19 @@ async function showFolders(folderkey) {
       folderIcon.classList.add("fa-solid");
       folderIcon.classList.add(icons[ext] ? icons[ext] : "fa-folder");
       folderLink.insertBefore(folderIcon, folderLink.firstChild);
+
+      const renameIcon = document.createElement('i');
+      renameIcon.classList.add('fa-solid', 'fa-pen-to-square', 'rename-icon');
+      renameIcon.setAttribute('data-folder', folderName);
+      // renameIcon.addEventListener('click', renameFolder);
+      folderLink.appendChild(renameIcon);
+
+      const deleteIcon = document.createElement('i');
+      deleteIcon.classList.add('fa-solid', 'fa-trash', 'delete-icon');
+      deleteIcon.setAttribute('data-folder', folderName);
+      // deleteIcon.addEventListener('click', deleteFolder);
+      folderLink.appendChild(deleteIcon);
+
       const folderDiv = document.createElement("div");
       folderDiv.classList.add("folder");
       folderDiv.appendChild(folderLink);
