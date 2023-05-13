@@ -77,7 +77,6 @@ def getFoldersOnly():
 def uploadFile():
     filename = request.form.get("filename")
     parentFolder = request.form.get("parentKey")
-    # print(request.form.get("filename"), '😀😀😀')
     parentFolder = os.path.join(BASE_DIR, parentFolder)
 
     file = request.files["file"]

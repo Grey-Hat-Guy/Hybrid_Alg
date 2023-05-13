@@ -11,73 +11,43 @@
     <div class="tab-pane active" id="dashboard">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <div
-            class="collapse navbar-collapse justify-content-between"
-            id="navbarSupportedContent"
-          >
+          <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <!-- Modal for Folder Creation -->
-              <div
-                class="modal fade"
-                id="newFolderModal"
-                tabindex="-1"
-                aria-labelledby="newFolderModalLabel"
-                aria-hidden="true"
-              >
+              <div class="modal fade" id="newFolderModal" tabindex="-1" aria-labelledby="newFolderModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="newFolderModalLabel">
                         Create New Folder
                       </h5>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      >
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa-solid fa-xmark"></i>
                       </button>
                     </div>
                     <div class="modal-body">
                       <form>
                         <div class="mb-3">
-                          <label for="folderParent" class="form-label"
-                            >Folder Parent</label
-                          >
+                          <label for="folderParent" class="form-label">Folder Parent</label>
                           <select class="form-select" id="folderParent">
                             <option value="">Select a folder</option>
                           </select>
                         </div>
 
                         <div class="mb-3">
-                          <label for="folderName" class="form-label"
-                            >Folder Name</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="folderName"
-                            placeholder="Enter folder name"
-                            autocomplete="off"
-                          />
+                          <label for="folderName" class="form-label">Folder Name</label>
+                          <input type="text" class="form-control" id="folderName" placeholder="Enter folder name"
+                            autocomplete="off" />
                         </div>
-                        
+
                       </form>
                     </div>
                     <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-danger"
-                        data-bs-dismiss="modal"
-                      >
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                         Close
                       </button>
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        id="createFolderBtn"
-                      >
+                      <button type="button" class="btn btn-secondary" id="createFolderBtn">
                         Create Folder
                       </button>
                     </div>
@@ -85,25 +55,15 @@
                 </div>
               </div>
 
-               <div
-                class="modal fade"
-                id="newFileModal"
-                tabindex="-1"
-                aria-labelledby="newFileModalLabel"
-                aria-hidden="true"
-              >
+              <div class="modal fade" id="newFileModal" tabindex="-1" aria-labelledby="newFileModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="newFileModalLabel">
                         Upload New File
                       </h5>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      >
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa-solid fa-xmark"></i>
                       </button>
                     </div>
@@ -111,87 +71,46 @@
                       <form id="fileUploadForm">
 
                         <div class="mb-3">
-                          <label for="filename" class="form-label"
-                            >File Name</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="filename"
-                            placeholder="Enter File name"
-                            autocomplete="off"
-                            name="filename"
-                            required
-                          />
+                          <label for="filename" class="form-label">File Name</label>
+                          <input type="text" class="form-control" id="filename" placeholder="Enter File name"
+                            autocomplete="off" name="filename" required />
                         </div>
 
                         <!-- file input -->
                         <div class="mb-3">
-                          <label for="fileUpload" class="form-label"
-                            >Upload File</label
-                          >
+                          <label for="fileUpload" class="form-label">Upload File</label>
                           <i class="fa-regular fa-file"></i>
-                          <input
-                            type="file"
-                            class="form-control"
-                            id="fileUpload"
-                            name="fileUpload"
-                          />
+                          <input type="file" class="form-control" id="fileUpload" name="fileUpload" />
                         </div>
-                        <button
-                        type="button"
-                        class="btn btn-danger"
-                        data-bs-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button
-                        type="submit"
-                        class="btn btn-secondary"
-                        id="createFileButton"
-                      >
-                        Upload File
-                      </button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                          Close
+                        </button>
+                        <button type="submit" class="btn btn-secondary" id="createFileButton">
+                          Upload File
+                        </button>
                       </form>
                     </div>
                     <div class="modal-footer">
-                      
+
                     </div>
                   </div>
                 </div>
               </div>
 
               <li class="nav-item">
-                <a
-                  class="nav-link"
-                  href="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#newFolderModal"
-                  ><i class="fa-regular fa-plus"></i> New Folder</a
-                >
+                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#newFolderModal"><i
+                    class="fa-regular fa-plus"></i> New Folder</a>
               </li>
 
               <li class="nav-item">
-                <a
-                  class="nav-link"
-                  href="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#newFileModal"
-                  ><i class="fa-regular fa-file"></i> New File</a
-                >
+                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#newFileModal"><i
+                    class="fa-regular fa-file"></i> New File</a>
               </li>
 
               <!-- Search the Folders -->
               <form method="POST" class="d-flex" style="margin-left: 100px">
-                <input
-                  class="form-control me-2"
-                  type="text"
-                  id="searchBox"
-                  name="search_term"
-                  placeholder="Search"
-                  aria-label="Search"
-                  autocomplete="off"
-                />
+                <input class="form-control me-2" type="text" id="searchBox" name="search_term" placeholder="Search"
+                  aria-label="Search" autocomplete="off" />
                 <button class="btn btn-outline-dark" id="searchBtn">
                   Search
                 </button>
@@ -199,14 +118,8 @@
             </ul>
             <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
               <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="settingsDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
+                <a class="nav-link dropdown-toggle" href="#" id="settingsDropdown" role="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="fa fa-cog"></i> Settings
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="settingsDropdown">
@@ -217,9 +130,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"
-                  ><i class="fas fa-circle-info"></i> About</a
-                >
+                <a class="nav-link" href="#"><i class="fas fa-circle-info"></i> About</a>
               </li>
             </ul>
           </div>
@@ -227,11 +138,6 @@
       </nav>
       <div class="breadcrumb"></div>
       <div id="folderContainer">
-        <!-- <ul>
-                {% for folder in folders %}
-                <li>{{ folder }}</li>
-                {% endfor %}
-              </ul>  -->
       </div>
     </div>
     <div class="tab-pane" id="messages">
