@@ -51,6 +51,7 @@ body {
 }
 
 .folder {
+  position: relative;
   display: block;
   margin: 10px;
   padding: 10px;
@@ -77,14 +78,37 @@ a.folder-link {
   color: #46494e;
 }
 
+.breadcrumb {
+  background-color: #cac7c7;
+  padding: 3px 15px;
+  border-radius: 4px;
+}
+
+.breadcrumb li {
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 20px;
+}
+
+.breadcrumb li a {
+  color: #3352b7;
+  text-decoration: none;
+}
+
+.breadcrumb li.active {
+  color: #242323;
+}
+
 .delete-icon {
   position: absolute;
+  cursor: pointer;
   right: 20px;
-  margin-top: 5px;
+  top: 15px;
 }
 
 .rename-icon {
   position: absolute;
+  cursor: pointer;
   right: 70px;
-  margin-top: 5px;
+  top: 15px;
 }

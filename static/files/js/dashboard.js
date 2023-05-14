@@ -62,14 +62,14 @@ function createBreadcrumb() {
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
           ${pathArr
-            .map((folder, index) => {
-              const folderPath = pathArr.slice(0, index + 1).join("/");
-              if (index === pathArr.length - 1) {
-                return `<li class="breadcrumb-item active" aria-current="page">${folder}</li>`;
-              }
-              return `<li class="breadcrumb-item"><a href="#" data-folder-path="${folderPath}">${folder}</a></li>`;
-            })
-            .join("")}
+      .map((folder, index) => {
+        const folderPath = pathArr.slice(0, index + 1).join("/");
+        if (index === pathArr.length - 1) {
+          return `<li class="breadcrumb-item active" aria-current="page">${folder}</li>`;
+        }
+        return `<li class="breadcrumb-item"><a href="#" data-folder-path="${folderPath}">${folder}</a></li>`;
+      })
+      .join("")}
       </ol>
     </nav>
   `;
@@ -79,12 +79,9 @@ function createBreadcrumb() {
     link.addEventListener("click", async (event) => {
       event.preventDefault();
       const folderPath = link.getAttribute("data-folder-path");
-      console.log(`Navigating to folder: ${folderPath}`);
       showFolders(folderPath);
       localStorage.setItem("folderPath", folderPath);
       await updateCreatFolderDropdown(folderPath);
-      // You can call a function here to navigate to the folder
-      // Example: navigateToFolder(folderPath)
     });
   });
 }
