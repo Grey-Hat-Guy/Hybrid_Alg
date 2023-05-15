@@ -95,7 +95,9 @@ async function showFolders(folderkey) {
       const deleteIcon = document.createElement('i');
       deleteIcon.classList.add('fa-solid', 'fa-trash', 'delete-icon');
       deleteIcon.setAttribute('data-folder', folderName);
-      deleteIcon.addEventListener('click', deleteFolder);
+      deleteIcon.addEventListener('click', function (event) {
+        deleteFolder(event, folder_path)
+      });
       iconContainer.appendChild(deleteIcon);
 
       folderDiv.appendChild(iconContainer);
@@ -128,8 +130,29 @@ function renameFolder(event, folder_path) {
   }
 }
 
-async function deleteFolder() {
-  console.log("Deleted");
+//  Function to handle folder deletion
+function deleteFolder(event, folder_path) {
+  const folderName = event.target.getAttribute("data-folder");
+  const confirmDelete = confirm("Are you sure you want to delete the folder?");
+
+  if (confirmDelete) {
+    // Send AJAX request to move folder to bin
+    fetch("/delete-folder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ folderName: folderName, folder_path: folder_path }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // Remove the folder element from the UI
+          const folderDiv = event.target.closest(".folder");
+          folderDiv.remove();
+        } else {
+          alert("Failed to delete folder.");
+        }
+      });
+  }
 }
 
 async function createFile(event, folderkey) {
@@ -168,3 +191,17 @@ const fileUploadForm = document.getElementById("fileUploadForm");
 fileUploadForm.addEventListener("submit", async (e) =>
   createFile(e, localStorage.getItem("folderPath"))
 );
+
+// Fetch bin folders and update the sidebar
+fetch("/getBinFolders")
+  .then(response => response.json())
+  .then(data => {
+    const binFoldersList = document.getElementById("binFoldersList");
+    binFoldersList.innerHTML = ""; // Clear any existing folders
+
+    data.forEach(folder => {
+      const li = document.createElement("li");
+      li.innerText = folder;
+      binFoldersList.appendChild(li);
+    });
+  });

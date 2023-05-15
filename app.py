@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os
+import shutil
 from flask import Flask, render_template, request, flash, jsonify, url_for, redirect
 from flask import send_file
 
@@ -116,17 +117,30 @@ def rename_folder():
     except Exception as e:
         return jsonify(success=False, error=str(e))
 
-@app.route("/deleteFile", methods=["POST"])
-def deleteFile():
-    filename = request.form.get("filename")
-    parentFolder = request.form.get("parentKey")
+@app.route('/delete-folder', methods=['POST'])
+def delete_folder():
+    data = request.get_json()
+    parentFolder = data['folder_path']
+    folder_name = data['folderName']
+    folder_path = os.path.join(parentFolder, folder_name)
+    bin_folder_path = os.path.join(os.path.dirname(parentFolder), 'bin')
     
-    parentFolder = os.path.join(BASE_DIR, parentFolder)
-    if not os.path.exists(os.path.join(parentFolder, filename)):
-        return jsonify({"error": f"File {filename} does not exist"}), 400
+    try:
+        if not os.path.exists(bin_folder_path):
+            os.makedirs(bin_folder_path)
+        shutil.move(folder_path, bin_folder_path)
+        return jsonify(success=True)
+    except Exception as e:
+        return jsonify(success=False, error=str(e))
     
-    os.remove(os.path.join(parentFolder, filename))
-    return jsonify({"filename": filename})
+@app.route("/getBinFolders")
+def getBinFolders():
+    bin_folder = os.path.join(BASE_DIR, "bin")
+    folders = os.listdir(bin_folder)
+    folders = [folder for folder in folders if os.path.isdir(os.path.join(bin_folder, folder))]
+    return jsonify(folders)
+
+
 
 @app.route("/searchFolders", methods=["POST"])
 def searchFolders():
