@@ -9,7 +9,6 @@ app.secret_key = "123"
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-
 @app.route("/")
 def home():
     return render_template("login.html")
@@ -97,17 +96,31 @@ def viewFile():
     parentFolder = request.args.get("parentKey")
 
     parentFolder = os.path.join(BASE_DIR, parentFolder)
-
     if not os.path.exists(os.path.join(parentFolder, filename)):
         return jsonify({"error": f"File {filename} does not exist"}), 400
 
     return send_file(os.path.join(parentFolder, filename), as_attachment=True)
 
+@app.route('/rename-folder', methods=['POST'])
+def rename_folder():
+    try:
+        data = request.get_json()
+        parentFolder = data['folder_path']
+        folder_name = data['folderName']
+        new_folder_name = data['newFolderName']
+        folder_path = os.path.join(parentFolder, folder_name)
+        print(folder_path)
+        new_folder_path = os.path.join(parentFolder, new_folder_name)
+        os.rename(folder_path, new_folder_path)
+        return jsonify(success=True)
+    except Exception as e:
+        return jsonify(success=False, error=str(e))
+
 @app.route("/deleteFile", methods=["POST"])
 def deleteFile():
     filename = request.form.get("filename")
     parentFolder = request.form.get("parentKey")
-
+    
     parentFolder = os.path.join(BASE_DIR, parentFolder)
     if not os.path.exists(os.path.join(parentFolder, filename)):
         return jsonify({"error": f"File {filename} does not exist"}), 400

@@ -20,6 +20,7 @@ async function updateCreatFolderDropdown(folderpath) {
 async function showFolders(folderkey) {
   const basefolderkey = "all_folders";
   const res = await fetch("/getallFiles?folderkey=" + folderkey);
+  // console.log(folderkey);
   const icons = {
     doc: "fa-file-word",
     docx: "fa-file-word",
@@ -66,29 +67,8 @@ async function showFolders(folderkey) {
         let folderPath = localStorage.getItem("folderPath");
         showFolders(folderPath);
       });
-      // folderLink.textContent = folderName;
-      // folderLink.classList.add("folder-link");
-      // const folderIcon = document.createElement("i");
-      // folderIcon.classList.add("fa-solid");
-      // folderIcon.classList.add(icons[ext] ? icons[ext] : "fa-folder");
-      // folderLink.insertBefore(folderIcon, folderLink.firstChild);
 
-      // const renameIcon = document.createElement('i');
-      // renameIcon.classList.add('fa-solid', 'fa-pen-to-square', 'rename-icon');
-      // renameIcon.setAttribute('data-folder', folderName);
-      // renameIcon.addEventListener('click', renameFolder);
-      // folderLink.appendChild(renameIcon);
-
-      // const deleteIcon = document.createElement('i');
-      // deleteIcon.classList.add('fa-solid', 'fa-trash', 'delete-icon');
-      // deleteIcon.setAttribute('data-folder', folderName);
-      // // deleteIcon.addEventListener('click', deleteFolder);
-      // folderLink.appendChild(deleteIcon);
-
-      // const folderDiv = document.createElement("div");
-      // folderDiv.classList.add("folder");
-      // folderDiv.appendChild(folderLink);
-      // folderContainer.appendChild(folderDiv);
+      const folder_path = localStorage.getItem("folderPath");
 
       const folderDiv = document.createElement("div");
       folderDiv.classList.add("folder");
@@ -107,7 +87,9 @@ async function showFolders(folderkey) {
       const renameIcon = document.createElement('i');
       renameIcon.classList.add('fa-solid', 'fa-pen-to-square', 'rename-icon');
       renameIcon.setAttribute('data-folder', folderName);
-      renameIcon.addEventListener('click', renameFolder);
+      renameIcon.addEventListener('click', function (event) {
+        renameFolder(event, folder_path)
+      });
       iconContainer.appendChild(renameIcon);
 
       const deleteIcon = document.createElement('i');
@@ -127,8 +109,23 @@ async function showFolders(folderkey) {
   createBreadcrumb();
 }
 
-async function renameFolder() {
-  console.log("Renamed");
+function renameFolder(event, folder_path) {
+  const folderName = event.target.getAttribute("data-folder");
+  const newFolderName = prompt("Enter new folder name:");
+  if (newFolderName !== null) {
+    const folderLink = event.target.parentNode.previousSibling;
+    folderLink.textContent = newFolderName;
+    event.target.setAttribute("data-folder", newFolderName);
+    const data = { folderName: folderName, newFolderName: newFolderName, folder_path: folder_path };
+    fetch("/rename-folder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => location.reload())
+      .catch((error) => console.error(error));
+  }
 }
 
 async function deleteFolder() {
