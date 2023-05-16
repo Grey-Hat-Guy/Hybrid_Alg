@@ -2,6 +2,7 @@
 
 import os
 import shutil
+import test
 from flask import Flask, render_template, request, flash, jsonify, url_for, redirect
 from flask import send_file
 
@@ -97,13 +98,33 @@ def getFoldersOnly():
     folders = [folder for folder in folders if os.path.isdir(os.path.join(parentFolder, folder))]
     return jsonify(folders)
 
+# @app.route("/uploadFile", methods=["POST"])
+# def uploadFile():
+#     filename = request.form.get("filename")
+#     parentFolder = request.form.get("parentKey")
+#     parentFolder = os.path.join(BASE_DIR, parentFolder)
+
+#     file = request.files["file"]
+
+#     # change extension to original extension
+#     originalFileExtension = os.path.splitext(file.filename)[1]
+#     newFilename = filename + originalFileExtension
+
+#     if os.path.exists(os.path.join(parentFolder, newFilename)):
+#         return jsonify({"error": f"File {newFilename} already exists"}), 400
+    
+#     file.save(os.path.join(parentFolder, newFilename))
+#     return jsonify({"filename": newFilename})
+
 @app.route("/uploadFile", methods=["POST"])
 def uploadFile():
     filename = request.form.get("filename")
     parentFolder = request.form.get("parentKey")
     parentFolder = os.path.join(BASE_DIR, parentFolder)
+    print(parentFolder)
 
     file = request.files["file"]
+    print(file)
 
     # change extension to original extension
     originalFileExtension = os.path.splitext(file.filename)[1]
@@ -112,8 +133,25 @@ def uploadFile():
     if os.path.exists(os.path.join(parentFolder, newFilename)):
         return jsonify({"error": f"File {newFilename} already exists"}), 400
     
-    file.save(os.path.join(parentFolder, newFilename))
-    return jsonify({"filename": newFilename})
+    # Save the uploaded file
+    print(file.filename)
+    file_path = os.path.join(parentFolder, file.filename)
+    print(file_path)
+    file.save(file_path)
+
+    # Call the main function from test.py and pass the uploaded file as a parameter
+    encrypted_file_path = test.main(file_path)
+    print(encrypted_file_path)
+
+    # Get the filename from the encrypted file path
+    encrypted_filename = os.path.basename(encrypted_file_path)
+    print(encrypted_filename)
+    
+    # Move the encrypted file to the parentFolder path
+    encrypted_file_dest = os.path.join(parentFolder, encrypted_filename)
+    shutil.move(encrypted_file_path, encrypted_file_dest)
+
+    return jsonify({"filename": encrypted_filename})
 
 @app.route("/viewFile", methods=["GET"])
 def viewFile():

@@ -111,6 +111,7 @@ async function showFolders(folderkey) {
   createBreadcrumb();
 }
 
+
 function renameFolder(event, folder_path) {
   const folderName = event.target.getAttribute("data-folder");
   const newFolderName = prompt("Enter new folder name:");
@@ -148,6 +149,7 @@ function deleteFolder(event, folder_path) {
           // Remove the folder element from the UI
           const folderDiv = event.target.closest(".folder");
           folderDiv.remove();
+          location.reload();
         } else {
           alert("Failed to delete folder.");
         }
@@ -213,6 +215,8 @@ async function createFile(event, folderkey) {
   });
 
   if (res.status == 200) {
+    // const response = await res.json();
+    // const encryptedFilename = response.filename;
     bootstrapModal.hide();
     filename.value = "";
     showFolders(localStorage.getItem("folderPath"));
@@ -232,7 +236,6 @@ fetch("/getBinFolders")
   .then(data => {
     const binFoldersList = document.getElementById("binFoldersList");
     binFoldersList.innerHTML = ""; // Clear any existing folders
-
     data.forEach(folder => {
       const li = document.createElement("li");
       li.innerText = folder;

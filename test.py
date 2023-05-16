@@ -101,12 +101,12 @@ def rsa_decrypt_file(key, input_file):
     return output_filename
 
 
-def main():
+def main(input_file):
     
     (pub_key, pri_key) = rsa.newkeys(2048)
 
     # Encrypt a file using Camellia and then RSA
-    input_file = "sample.txt"
+    # input_file = "sample.txt"
     cam_key = os.urandom(32)
     cam_encrypted_file = camellia_encrypt_file(cam_key, input_file)
     encrypted_filename = rsa_encrypt_file(pub_key, cam_encrypted_file)
@@ -121,6 +121,7 @@ def main():
     #Removing unwanted an temp files
     os.remove(cam_encrypted_file)
     os.remove(de_cam)
+    return encrypted_filename
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
