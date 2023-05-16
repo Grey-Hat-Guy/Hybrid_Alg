@@ -155,6 +155,40 @@ function deleteFolder(event, folder_path) {
   }
 }
 
+// async function getBinFolders() {
+//   console.log("Called");
+//   const res = await fetch("/getBinFolders");
+//   if (res.status === 200) {
+//     const binFolders = await res.json();
+//     const binFoldersList = document.getElementById("binFoldersList");
+//     if (binFolders.length > 0) {
+//       const ul = document.createElement("ul");
+//       binFolders.forEach((folder) => {
+//         const li = document.createElement("li");
+//         const a = document.createElement("a");
+//         const folderIcon = document.createElement("i");
+//         folderIcon.classList.add("fa-solid", "fa-folder");
+//         a.appendChild(folderIcon);
+//         a.appendChild(document.createTextNode(folder));
+//         li.appendChild(a);
+//         ul.appendChild(li);
+//       });
+//       binFoldersList.appendChild(ul);
+//     } else {
+//       const p = document.createElement("p");
+//       p.textContent = "No bin folders found.";
+//       binFoldersList.appendChild(p);
+//     }
+//   } else {
+//     console.error("Error loading bin folders:", res.status);
+//     alert("Error loading bin folders.");
+//   }
+// }
+
+// // Call the function to fetch and display the bin folders
+// getBinFolders();
+
+
 async function createFile(event, folderkey) {
   const newFileModal = document.querySelector("#newFileModal");
   const bootstrapModal = bootstrap.Modal.getInstance(newFileModal);

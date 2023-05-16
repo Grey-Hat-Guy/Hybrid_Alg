@@ -65,6 +65,30 @@ def getFolders():
     folders = [{"name" : folder, "isdir" : os.path.isdir(os.path.join(parentFolder, folder))} for folder in folders]
     return jsonify(folders)
 
+# @app.route("/getallFiles")
+# def getFolders():
+#     folderkey = request.args.get("folderkey")
+#     parentFolder = os.path.join(BASE_DIR, folderkey)
+#     folders = os.listdir(parentFolder)
+
+#     binFolder = os.path.join(BASE_DIR, "bin")
+#     deletedFolders = []
+
+#     if os.path.exists(binFolder):
+#         deletedFolders = os.listdir(binFolder)
+    
+#     folder_data = []
+#     for folder in folders:
+#         folder_path = os.path.join(parentFolder, folder)
+#         is_directory = os.path.isdir(folder_path)
+#         is_deleted = folder in deletedFolders
+
+#         folder_info = {"name" : folder, "isdir" : is_directory, "deleted" : is_deleted}
+#         folder_data.append(folder_info)
+
+#     return jsonify(folder_data)
+
+
 @app.route("/getFoldersonly")
 def getFoldersOnly():
     folderkey = request.args.get("folderkey")
@@ -138,9 +162,15 @@ def getBinFolders():
     bin_folder = os.path.join(BASE_DIR, "bin")
     folders = os.listdir(bin_folder)
     folders = [folder for folder in folders if os.path.isdir(os.path.join(bin_folder, folder))]
+    print(folders)
     return jsonify(folders)
 
-
+# @app.route("/getBinFolders")
+# def getBinFolders():
+#     bin_folder = os.path.join(BASE_DIR, "bin")
+#     folders = os.listdir(bin_folder)
+#     folders = [folder for folder in folders if os.path.isdir(os.path.join(bin_folder, folder))]
+#     return render_template("dashboard.html", bin_folders = folders)
 
 @app.route("/searchFolders", methods=["POST"])
 def searchFolders():
@@ -155,6 +185,9 @@ def searchFolders():
 
     return jsonify(search_results)
 
+@app.route("/logout")
+def logout():
+    return redirect(url_for("login"))
 
 if __name__ == "__main__":
     app.run(debug=True)
