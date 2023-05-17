@@ -8,7 +8,7 @@ from secrets import token_bytes
 import os
 
 
-def camellia_encrypt_file(key, input_file):
+def camellia_encrypt_file(key, input_file, filename):
     """
     Encrypts the contents of an input file using Camellia and saves the encrypted data to an output file.
     """
@@ -16,8 +16,8 @@ def camellia_encrypt_file(key, input_file):
     cipher = Cipher(algorithms.Camellia(key), modes.CBC(iv), backend=default_backend())
     encryptor = cipher.encryptor()
     padder = padding.PKCS7(128).padder()
-    x = input_file.split(".")
-    output_file = x[0] + "_cam" + ".egnc"
+    # x = input_file.split(".")
+    output_file = filename + "_cam" + ".egnc"
     with open(input_file, "rb") as file:
         plaintext = file.read()
         ciphertext = encryptor.update(padder.update(plaintext) + padder.finalize()) + encryptor.finalize()
@@ -101,14 +101,14 @@ def rsa_decrypt_file(key, input_file):
     return output_filename
 
 
-def main(input_file):
+def main(input_file, filename):
     
     (pub_key, pri_key) = rsa.newkeys(2048)
 
     # Encrypt a file using Camellia and then RSA
     # input_file = "sample.txt"
     cam_key = os.urandom(32)
-    cam_encrypted_file = camellia_encrypt_file(cam_key, input_file)
+    cam_encrypted_file = camellia_encrypt_file(cam_key, input_file, filename)
     encrypted_filename = rsa_encrypt_file(pub_key, cam_encrypted_file)
 
     print("\nEncryption done 100% file name --------> {} ".format(encrypted_filename))
@@ -123,5 +123,3 @@ def main(input_file):
     os.remove(de_cam)
     return encrypted_filename
 
-# if __name__ == '__main__':
-#     main()

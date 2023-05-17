@@ -17,10 +17,103 @@ async function updateCreatFolderDropdown(folderpath) {
   });
 }
 
+// async function showFolders(folderkey) {
+//   const basefolderkey = "all_folders";
+//   const res = await fetch("/getallFiles?folderkey=" + folderkey);
+//   const icons = {
+//     doc: "fa-file-word",
+//     docx: "fa-file-word",
+//     txt: "fa-file",
+//     pdf: "fa-file-pdf",
+//     jpg: "fa-image",
+//     png: "fa-image",
+//     gif: "fa-image",
+//     py: "fa-file-code"
+//   };
+
+//   if (res.status === 200) {
+//     const folders = await res.json();
+//     folderContainer.innerHTML = "";
+
+//     folders.forEach(({ name: folderName, isdir }) => {
+//       const ext = folderName.split(".").pop();
+
+//       const folderUrl = "/folders/" + folderName;
+//       const folderLink = document.createElement("a");
+//       folderLink.href = "#";
+//       folderLink.addEventListener("click", function (e) {
+//         if (!isdir) {
+//           fileurl =
+//             "/viewFile?filename=" +
+//             folderName +
+//             "&parentKey=" +
+//             localStorage.getItem("folderPath");
+
+//           window.open(fileurl, "_blank");
+//           return;
+//         }
+//         if (!localStorage.getItem("folderPath")) {
+//           localStorage.setItem(
+//             "folderPath",
+//             localStorage.getItem("folderPath") + "/" + folderName
+//           );
+//         } else {
+//           let prev_folderPath = localStorage.getItem("folderPath");
+//           localStorage.setItem(
+//             "folderPath",
+//             prev_folderPath + "/" + folderName
+//           );
+//         }
+//         let folderPath = localStorage.getItem("folderPath");
+//         showFolders(folderPath);
+//       });
+
+//       const folder_path = localStorage.getItem("folderPath");
+
+//       const folderDiv = document.createElement("div");
+//       folderDiv.classList.add("folder");
+
+//       folderLink.textContent = folderName;
+//       folderLink.classList.add("folder-link");
+//       const folderIcon = document.createElement("i");
+//       folderIcon.classList.add("fa-solid");
+//       folderIcon.classList.add(icons[ext] ? icons[ext] : "fa-folder");
+//       folderLink.insertBefore(folderIcon, folderLink.firstChild);
+//       folderDiv.appendChild(folderLink);
+
+//       const iconContainer = document.createElement("div");
+//       iconContainer.classList.add("icon-container");
+
+//       const renameIcon = document.createElement('i');
+//       renameIcon.classList.add('fa-solid', 'fa-pen-to-square', 'rename-icon');
+//       renameIcon.setAttribute('data-folder', folderName);
+//       renameIcon.addEventListener('click', function (event) {
+//         renameFolder(event, folder_path)
+//       });
+//       iconContainer.appendChild(renameIcon);
+
+//       const deleteIcon = document.createElement('i');
+//       deleteIcon.classList.add('fa-solid', 'fa-trash', 'delete-icon');
+//       deleteIcon.setAttribute('data-folder', folderName);
+//       deleteIcon.addEventListener('click', function (event) {
+//         deleteFolder(event, folder_path)
+//       });
+//       iconContainer.appendChild(deleteIcon);
+
+//       folderDiv.appendChild(iconContainer);
+
+//       folderContainer.appendChild(folderDiv);
+//     });
+//   } else {
+//     console.error("Error loading folders:", folders.status);
+//     alert("Error loading folders.");
+//   }
+//   createBreadcrumb();
+// }
+
 async function showFolders(folderkey) {
   const basefolderkey = "all_folders";
   const res = await fetch("/getallFiles?folderkey=" + folderkey);
-  // console.log(folderkey);
   const icons = {
     doc: "fa-file-word",
     docx: "fa-file-word",
@@ -33,76 +126,79 @@ async function showFolders(folderkey) {
 
   if (res.status === 200) {
     const folders = await res.json();
-    // console.log(folders);
     folderContainer.innerHTML = "";
+
     folders.forEach(({ name: folderName, isdir }) => {
       const ext = folderName.split(".").pop();
 
-      const folderUrl = "/folders/" + folderName;
-      const folderLink = document.createElement("a");
-      folderLink.href = "#";
-      folderLink.addEventListener("click", function (e) {
-        if (!isdir) {
-          fileurl =
-            "/viewFile?filename=" +
-            folderName +
-            "&parentKey=" +
-            localStorage.getItem("folderPath");
+      if (isdir || ext === "enc") {
+        const folderUrl = "/folders/" + folderName;
+        const folderLink = document.createElement("a");
+        folderLink.href = "#";
+        folderLink.addEventListener("click", function (e) {
+          if (!isdir) {
+            fileurl =
+              "/viewFile?filename=" +
+              folderName +
+              "&parentKey=" +
+              localStorage.getItem("folderPath");
 
-          window.open(fileurl, "_blank");
-          return;
-        }
-        if (!localStorage.getItem("folderPath")) {
-          localStorage.setItem(
-            "folderPath",
-            localStorage.getItem("folderPath") + "/" + folderName
-          );
-        } else {
-          let prev_folderPath = localStorage.getItem("folderPath");
-          localStorage.setItem(
-            "folderPath",
-            prev_folderPath + "/" + folderName
-          );
-        }
-        let folderPath = localStorage.getItem("folderPath");
-        showFolders(folderPath);
-      });
+            window.open(fileurl, "_blank");
+            return;
+          }
 
-      const folder_path = localStorage.getItem("folderPath");
+          if (!localStorage.getItem("folderPath")) {
+            localStorage.setItem(
+              "folderPath",
+              localStorage.getItem("folderPath") + "/" + folderName
+            );
+          } else {
+            let prev_folderPath = localStorage.getItem("folderPath");
+            localStorage.setItem(
+              "folderPath",
+              prev_folderPath + "/" + folderName
+            );
+          }
+          let folderPath = localStorage.getItem("folderPath");
+          showFolders(folderPath);
+        });
 
-      const folderDiv = document.createElement("div");
-      folderDiv.classList.add("folder");
+        const folder_path = localStorage.getItem("folderPath");
 
-      folderLink.textContent = folderName;
-      folderLink.classList.add("folder-link");
-      const folderIcon = document.createElement("i");
-      folderIcon.classList.add("fa-solid");
-      folderIcon.classList.add(icons[ext] ? icons[ext] : "fa-folder");
-      folderLink.insertBefore(folderIcon, folderLink.firstChild);
-      folderDiv.appendChild(folderLink);
+        const folderDiv = document.createElement("div");
+        folderDiv.classList.add("folder");
 
-      const iconContainer = document.createElement("div");
-      iconContainer.classList.add("icon-container");
+        folderLink.textContent = folderName;
+        folderLink.classList.add("folder-link");
+        const folderIcon = document.createElement("i");
+        folderIcon.classList.add("fa-solid");
+        folderIcon.classList.add(icons[ext] ? icons[ext] : "fa-folder");
+        folderLink.insertBefore(folderIcon, folderLink.firstChild);
+        folderDiv.appendChild(folderLink);
 
-      const renameIcon = document.createElement('i');
-      renameIcon.classList.add('fa-solid', 'fa-pen-to-square', 'rename-icon');
-      renameIcon.setAttribute('data-folder', folderName);
-      renameIcon.addEventListener('click', function (event) {
-        renameFolder(event, folder_path)
-      });
-      iconContainer.appendChild(renameIcon);
+        const iconContainer = document.createElement("div");
+        iconContainer.classList.add("icon-container");
 
-      const deleteIcon = document.createElement('i');
-      deleteIcon.classList.add('fa-solid', 'fa-trash', 'delete-icon');
-      deleteIcon.setAttribute('data-folder', folderName);
-      deleteIcon.addEventListener('click', function (event) {
-        deleteFolder(event, folder_path)
-      });
-      iconContainer.appendChild(deleteIcon);
+        const renameIcon = document.createElement('i');
+        renameIcon.classList.add('fa-solid', 'fa-pen-to-square', 'rename-icon');
+        renameIcon.setAttribute('data-folder', folderName);
+        renameIcon.addEventListener('click', function (event) {
+          renameFolder(event, folder_path)
+        });
+        iconContainer.appendChild(renameIcon);
 
-      folderDiv.appendChild(iconContainer);
+        const deleteIcon = document.createElement('i');
+        deleteIcon.classList.add('fa-solid', 'fa-trash', 'delete-icon');
+        deleteIcon.setAttribute('data-folder', folderName);
+        deleteIcon.addEventListener('click', function (event) {
+          deleteFolder(event, folder_path)
+        });
+        iconContainer.appendChild(deleteIcon);
 
-      folderContainer.appendChild(folderDiv);
+        folderDiv.appendChild(iconContainer);
+
+        folderContainer.appendChild(folderDiv);
+      }
     });
   } else {
     console.error("Error loading folders:", folders.status);
@@ -110,6 +206,8 @@ async function showFolders(folderkey) {
   }
   createBreadcrumb();
 }
+
+
 
 
 function renameFolder(event, folder_path) {

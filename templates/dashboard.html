@@ -117,18 +117,10 @@
               </form>
             </ul>
             <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="settingsDropdown" role="button"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa fa-cog"></i> Settings
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="settingsDropdown">
-                  <li>
-                    <a class="dropdown-item" href="#">Reset Password</a>
-                  </li>
-                  <li><a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a></li>
-                </ul>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Log Out</a>
               </li>
+
               <li class="nav-item">
                 <a class="nav-link" href="#"><i class="fas fa-circle-info"></i> About</a>
               </li>
@@ -257,17 +249,8 @@
               </form>
             </ul>
             <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="settingsDropdown" role="button"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa fa-cog"></i> Settings
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="settingsDropdown">
-                  <li>
-                    <a class="dropdown-item" href="#">Reset Password</a>
-                  </li>
-                  <li><a class="dropdown-item" href="#">Log Out</a></li>
-                </ul>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Log Out</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#"><i class="fas fa-circle-info"></i> About</a>
@@ -276,25 +259,7 @@
           </div>
         </div>
       </nav>
-      <!-- <ul id="binFoldersList">
-        {% for folder in folders %}
-        {% endfor %}
-      </ul> -->
       <div id="binFoldersList">
-        <!-- {% if bin_folders %}
-        <ul>
-          {% for folder in bin_folders %}
-          <li>
-            <a href="#">
-              <i class="fa-solid fa-folder"></i>
-              {{ folder }}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-        {% else %}
-        <p>No bin folders found.</p>
-        {% endif %} -->
       </div>
     </div>
   </div>
