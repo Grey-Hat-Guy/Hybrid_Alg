@@ -101,7 +101,7 @@ def rsa_decrypt_file(key, input_file):
     return output_filename
 
 
-def main(input_file, filename):
+def encrypt(input_file, filename):
     
     (pub_key, pri_key) = rsa.newkeys(2048)
 
@@ -113,7 +113,7 @@ def main(input_file, filename):
 
     print("\nEncryption done 100% file name --------> {} ".format(encrypted_filename))
 
-    #decrypted_file = decrypt_camellia_rsa(cam_key, pri_key, encrypted_filename)
+    # decrypted_file = decrypt_camellia_rsa(cam_key, pri_key, encrypted_filename)
     de_cam = rsa_decrypt_file(pri_key, encrypted_filename)
     decrypted_file = camellia_decrypt_file(cam_key, de_cam)
     

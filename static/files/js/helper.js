@@ -207,9 +207,6 @@ async function showFolders(folderkey) {
   createBreadcrumb();
 }
 
-
-
-
 function renameFolder(event, folder_path) {
   const folderName = event.target.getAttribute("data-folder");
   const newFolderName = prompt("Enter new folder name:");
@@ -243,6 +240,7 @@ function deleteFolder(event, folder_path) {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         if (data.success) {
           // Remove the folder element from the UI
           const folderDiv = event.target.closest(".folder");
@@ -328,15 +326,26 @@ fileUploadForm.addEventListener("submit", async (e) =>
   createFile(e, localStorage.getItem("folderPath"))
 );
 
-// Fetch bin folders and update the sidebar
 fetch("/getBinFolders")
   .then(response => response.json())
   .then(data => {
     const binFoldersList = document.getElementById("binFoldersList");
     binFoldersList.innerHTML = ""; // Clear any existing folders
-    data.forEach(folder => {
+
+    // Access folders and files properties in the data object
+    const folders = data.folders;
+    const files = data.files;
+
+    folders.forEach(folder => {
       const li = document.createElement("li");
       li.innerText = folder;
+      binFoldersList.appendChild(li);
+    });
+
+    // Iterate over files
+    files.forEach(file => {
+      const li = document.createElement("li");
+      li.innerText = file;
       binFoldersList.appendChild(li);
     });
   });
