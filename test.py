@@ -59,7 +59,7 @@ def camellia_decrypt_file(key, input_file):
     """
     x = input_file.split("_")
     print(x)
-    output_file = x[0] + "_decrypted" + ".txt"
+    output_file = x[0] + "_decrypted." + x[1]
     with open(input_file, "rb") as file:
         iv = file.read(16)
         cipher = Cipher(algorithms.Camellia(key), modes.CBC(iv), backend=default_backend())
@@ -79,7 +79,7 @@ def rsa_decrypt_file(key, input_file):
     """
     x = input_file.split('.')
     print(x)
-    output_filename = x[0] + '_decrypted.' + x[1]
+    output_filename = x[0] + '_decrypted.' + "txt"
     end_file = open(output_filename, 'wb')
     start_file = open(input_file, 'rb')
 
@@ -101,14 +101,15 @@ def rsa_decrypt_file(key, input_file):
     return output_filename
 
 
-def encrypt(input_file, filename):
-    
-    (pub_key, pri_key) = rsa.newkeys(2048)
+def encrypt(input_file, fileName):
 
-    # Encrypt a file using Camellia and then RSA
-    # input_file = "sample.txt"
+    (pub_key, pri_key) = rsa.newkeys(2048)
     cam_key = os.urandom(32)
-    cam_encrypted_file = camellia_encrypt_file(cam_key, input_file, filename)
+
+    # input_file = "sample.txt"
+    filename = fileName.split(".")
+    print(filename)
+    cam_encrypted_file = camellia_encrypt_file(cam_key, input_file, fileName)
     encrypted_filename = rsa_encrypt_file(pub_key, cam_encrypted_file)
 
     print("\nEncryption done 100% file name --------> {} ".format(encrypted_filename))
@@ -123,3 +124,5 @@ def encrypt(input_file, filename):
     os.remove(de_cam)
     return encrypted_filename
 
+# if __name__ == "__main__":
+#     main()

@@ -131,7 +131,7 @@ async function showFolders(folderkey) {
     folders.forEach(({ name: folderName, isdir }) => {
       const ext = folderName.split(".").pop();
 
-      if (isdir || ext === "enc") {
+      if (ext !== "enc") {
         const folderUrl = "/folders/" + folderName;
         const folderLink = document.createElement("a");
         folderLink.href = "#";
@@ -142,7 +142,7 @@ async function showFolders(folderkey) {
               folderName +
               "&parentKey=" +
               localStorage.getItem("folderPath");
-
+            // decryptFile(folderName);
             window.open(fileurl, "_blank");
             return;
           }
@@ -205,6 +205,33 @@ async function showFolders(folderkey) {
     alert("Error loading folders.");
   }
   createBreadcrumb();
+}
+
+function decryptFile(filename) {
+  // console.log(filename);
+  fetch("/decryptFile", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ filename: filename })
+  })
+    .then((response) => response.blob())
+    .then((blob) => {
+      // Create a temporary URL for the decrypted file
+      const url = window.URL.createObjectURL(blob);
+      // Create a temporary anchor element to initiate the file download
+      const a = document.createElement("a");
+      const filenameWithoutExtension = filename.substring(0, filename.lastIndexOf(".enc"));
+      const downloadFilename = filenameWithoutExtension + ".txt";
+      a.href = url;
+      a.download = downloadFilename // Set the downloaded file name
+      a.click(); // Initiate the file download
+      window.URL.revokeObjectURL(url); // Release the object URL
+    })
+    .catch((error) => {
+      console.error("Failed to decrypt and download file:", error);
+    });
 }
 
 function renameFolder(event, folder_path) {
