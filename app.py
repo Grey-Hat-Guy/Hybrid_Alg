@@ -15,7 +15,6 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 def home():
     return render_template("login.html")
 
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -29,11 +28,9 @@ def login():
             return render_template("login.html")
     return render_template("login.html")
 
-
 @app.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html", title="Dashboard")
-
 
 @app.route("/createFolder", methods=["POST"])
 def createFolder():
@@ -66,30 +63,6 @@ def getFolders():
     folders = [{"name" : folder, "isdir" : os.path.isdir(os.path.join(parentFolder, folder))} for folder in folders]
     return jsonify(folders)
 
-# @app.route("/getallFiles")
-# def getFolders():
-#     folderkey = request.args.get("folderkey")
-#     parentFolder = os.path.join(BASE_DIR, folderkey)
-#     folders = os.listdir(parentFolder)
-
-#     binFolder = os.path.join(BASE_DIR, "bin")
-#     deletedFolders = []
-
-#     if os.path.exists(binFolder):
-#         deletedFolders = os.listdir(binFolder)
-    
-#     folder_data = []
-#     for folder in folders:
-#         folder_path = os.path.join(parentFolder, folder)
-#         is_directory = os.path.isdir(folder_path)
-#         is_deleted = folder in deletedFolders
-
-#         folder_info = {"name" : folder, "isdir" : is_directory, "deleted" : is_deleted}
-#         folder_data.append(folder_info)
-
-#     return jsonify(folder_data)
-
-
 @app.route("/getFoldersonly")
 def getFoldersOnly():
     folderkey = request.args.get("folderkey")
@@ -97,24 +70,6 @@ def getFoldersOnly():
     folders = os.listdir(parentFolder)
     folders = [folder for folder in folders if os.path.isdir(os.path.join(parentFolder, folder))]
     return jsonify(folders)
-
-# @app.route("/uploadFile", methods=["POST"])
-# def uploadFile():
-#     filename = request.form.get("filename")
-#     parentFolder = request.form.get("parentKey")
-#     parentFolder = os.path.join(BASE_DIR, parentFolder)
-
-#     file = request.files["file"]
-
-#     # change extension to original extension
-#     originalFileExtension = os.path.splitext(file.filename)[1]
-#     newFilename = filename + originalFileExtension
-
-#     if os.path.exists(os.path.join(parentFolder, newFilename)):
-#         return jsonify({"error": f"File {newFilename} already exists"}), 400
-    
-#     file.save(os.path.join(parentFolder, newFilename))
-#     return jsonify({"filename": newFilename})
 
 @app.route("/uploadFile", methods=["POST"])
 def uploadFile():
@@ -146,8 +101,6 @@ def uploadFile():
     encrypted_file_dest = os.path.join(parentFolder, encrypted_filename)
     shutil.move(encrypted_file_path, encrypted_file_dest)
 
-    # os.remove(file_path)
-
     return jsonify({"filename": encrypted_filename})
 
 @app.route('/decryptFile', methods=['POST'])
@@ -156,9 +109,6 @@ def decrypt_file():
 
     # Call the decryption function from test.py
     decrypted_file_path = test.decrypt(filename)
-
-    # Get the original file extension
-    # original_extension = os.path.splitext(filename)[1]
     
     # Return the decrypted file with the same filename
     return send_file(decrypted_file_path, as_attachment=True)
@@ -189,26 +139,6 @@ def rename_folder():
     except Exception as e:
         return jsonify(success=False, error=str(e))
 
-# @app.route('/delete-folder', methods=['POST'])
-# def delete_folder():
-#     data = request.get_json()
-#     parentFolder = data['folder_path']
-#     folder_name = data['folderName']
-#     folder_path = os.path.join(parentFolder, folder_name)
-#     bin_folder_path = os.path.join(os.path.dirname(parentFolder), 'bin')
-    
-#     try:
-#         if folder_name == 'bin':
-#             return jsonify(success=False, error="Cannot delete the bin folder.")
-
-#         if not os.path.exists(bin_folder_path):
-#             os.makedirs(bin_folder_path)
-        
-#         shutil.move(folder_path, bin_folder_path)
-#         return jsonify(success=True)
-#     except Exception as e:
-#         return jsonify(success=False, error=str(e))
-
 @app.route('/delete-folder', methods=['POST'])
 def delete_folder():
     data = request.get_json()
@@ -221,25 +151,16 @@ def delete_folder():
         if folder_name == 'bin':
             return jsonify(success=False, error="Cannot delete the bin folder.")
 
-        if not os.path.exists(bin_folder_path):
-            os.makedirs(bin_folder_path)
-        
         if os.path.exists(os.path.join(parentFolder, 'bin')):
             shutil.rmtree(os.path.join(parentFolder, 'bin'))
+        
+        if not os.path.exists(bin_folder_path):
+            os.makedirs(bin_folder_path)
             
         shutil.move(folder_path, bin_folder_path)
         return jsonify(success=True)
     except Exception as e:
         return jsonify(success=False, error=str(e))
-
-   
-# @app.route("/getBinFolders")
-# def getBinFolders():
-#     bin_folder = os.path.join(BASE_DIR, "bin")
-#     folders = os.listdir(bin_folder)
-#     folders = [folder for folder in folders if os.path.isdir(os.path.join(bin_folder, folder))]
-#     files = [folder for folder in folders if os.path.isfile(os.path.join(bin_folder, folder))]
-#     return jsonify({"folders": folders, "files": files})
 
 @app.route("/getBinFolders")
 def getBinFolders():

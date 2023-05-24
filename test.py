@@ -7,7 +7,6 @@ from cryptography.hazmat.backends import default_backend
 from secrets import token_bytes
 import os
 
-
 def camellia_encrypt_file(key, input_file, filename):
     """
     Encrypts the contents of an input file using Camellia and saves the encrypted data to an output file.
@@ -58,7 +57,6 @@ def camellia_decrypt_file(key, input_file):
     Decrypts the contents of an input file that was encrypted using Camellia, and saves the decrypted data to an output file.
     """
     x = input_file.split("_")
-    print(x)
     output_file = x[0] + "_decrypted." + x[1]
     with open(input_file, "rb") as file:
         iv = file.read(16)
@@ -78,7 +76,6 @@ def rsa_decrypt_file(key, input_file):
     Decrypts the contents of an input file that has been encrypted using RSA and returns the decrypted data.
     """
     x = input_file.split('.')
-    print(x)
     output_filename = x[0] + '_decrypted.' + "txt"
     end_file = open(output_filename, 'wb')
     start_file = open(input_file, 'rb')
@@ -95,7 +92,6 @@ def rsa_decrypt_file(key, input_file):
 
     end_file.close()
     start_file.close()
-    # print(f"File '{input_file}' decrypted using RSA, and saved as '{output_file}'.")
     print(f"\nRSA Decryption 100%.")
 
     return output_filename
@@ -106,7 +102,6 @@ def encrypt(input_file, fileName):
     (pub_key, pri_key) = rsa.newkeys(2048)
     cam_key = os.urandom(32)
 
-    # input_file = "sample.txt"
     filename = fileName.split(".")
     print(filename)
     cam_encrypted_file = camellia_encrypt_file(cam_key, input_file, fileName)
@@ -114,7 +109,6 @@ def encrypt(input_file, fileName):
 
     print("\nEncryption done 100% file name --------> {} ".format(encrypted_filename))
 
-    # decrypted_file = decrypt_camellia_rsa(cam_key, pri_key, encrypted_filename)
     de_cam = rsa_decrypt_file(pri_key, encrypted_filename)
     decrypted_file = camellia_decrypt_file(cam_key, de_cam)
     
@@ -123,6 +117,3 @@ def encrypt(input_file, fileName):
     os.remove(cam_encrypted_file)
     os.remove(de_cam)
     return encrypted_filename
-
-# if __name__ == "__main__":
-#     main()
