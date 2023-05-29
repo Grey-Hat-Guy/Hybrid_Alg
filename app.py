@@ -151,13 +151,18 @@ def delete_folder():
         if folder_name == 'bin':
             return jsonify(success=False, error="Cannot delete the bin folder.")
 
-        if os.path.exists(os.path.join(parentFolder, 'bin')):
-            shutil.rmtree(os.path.join(parentFolder, 'bin'))
+        # if os.path.exists(os.path.join(parentFolder, 'bin')):
+        #     shutil.rmtree(os.path.join(parentFolder, 'bin'))
         
         if not os.path.exists(bin_folder_path):
             os.makedirs(bin_folder_path)
             
         shutil.move(folder_path, bin_folder_path)
+
+       # Remove the bin folder if it only contains the deleted folder
+        if len(os.listdir(bin_folder_path)) == 1:
+            shutil.rmtree(bin_folder_path)
+
         return jsonify(success=True)
     except Exception as e:
         return jsonify(success=False, error=str(e))
