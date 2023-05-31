@@ -54,7 +54,6 @@ def createFolder():
     folders = os.listdir(parentFolder)
     return jsonify({"folderName": folderName, "folders": folders})
 
-
 @app.route("/getallFiles")
 def getFolders():
     folderkey = request.args.get("folderkey")
