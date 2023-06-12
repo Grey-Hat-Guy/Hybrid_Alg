@@ -52,12 +52,13 @@ def rsa_encrypt_file(key, input_file):
     return output_filename
 
 
-def camellia_decrypt_file(key, input_file):
+def camellia_decrypt_file(key, input_file,ext):
     """
     Decrypts the contents of an input file that was encrypted using Camellia, and saves the decrypted data to an output file.
     """
     x = input_file.split("_")
-    output_file = x[0] + "_decrypted." + x[1]
+    print(x)
+    output_file = x[0] + "_decrypted." + ext
     with open(input_file, "rb") as file:
         iv = file.read(16)
         cipher = Cipher(algorithms.Camellia(key), modes.CBC(iv), backend=default_backend())
@@ -76,6 +77,7 @@ def rsa_decrypt_file(key, input_file):
     Decrypts the contents of an input file that has been encrypted using RSA and returns the decrypted data.
     """
     x = input_file.split('.')
+    print(x)
     output_filename = x[0] + '_decrypted.' + "txt"
     end_file = open(output_filename, 'wb')
     start_file = open(input_file, 'rb')
@@ -104,13 +106,14 @@ def encrypt(input_file, fileName):
 
     filename = fileName.split(".")
     print(filename)
-    cam_encrypted_file = camellia_encrypt_file(cam_key, input_file, fileName)
+    ext = filename[1]
+    cam_encrypted_file = camellia_encrypt_file(cam_key, input_file, filename[0])
     encrypted_filename = rsa_encrypt_file(pub_key, cam_encrypted_file)
 
     print("\nEncryption done 100% file name --------> {} ".format(encrypted_filename))
 
     de_cam = rsa_decrypt_file(pri_key, encrypted_filename)
-    decrypted_file = camellia_decrypt_file(cam_key, de_cam)
+    decrypted_file = camellia_decrypt_file(cam_key, de_cam,ext)
     
     print("\nThe Decryption is done Decrypted filename ----> {}".format(decrypted_file))
     #Removing unwanted an temp files
