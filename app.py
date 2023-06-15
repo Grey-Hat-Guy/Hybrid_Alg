@@ -3,6 +3,7 @@
 import os
 import shutil
 import test
+import json
 from flask import Flask, render_template, request, flash, jsonify, url_for, redirect
 from flask import send_file
 
@@ -184,7 +185,7 @@ def getBinFolders():
 @app.route("/searchFolders", methods=["POST"])
 def searchFolders():
     parentFolder = os.path.join(BASE_DIR, "all_folders")
-    search_term = request.form["search_term"]
+    search_term = request.json["search_term"]
     search_results = []
 
     for folder in os.listdir(parentFolder):
@@ -192,7 +193,7 @@ def searchFolders():
         if search_term.lower() in folder.lower():
             search_results.append(folder)
 
-    return jsonify(search_results)
+    return json.dumps(search_results)
 
 @app.route("/logout")
 def logout():

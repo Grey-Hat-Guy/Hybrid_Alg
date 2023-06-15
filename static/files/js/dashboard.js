@@ -176,6 +176,7 @@ function searchFolders() {
 
   const xhr = new XMLHttpRequest();
   xhr.open("POST", "/searchFolders");
+  xhr.setRequestHeader("Content-Type", "application/json");
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
@@ -193,5 +194,5 @@ function searchFolders() {
       }
     }
   };
-  xhr.send();
+  xhr.send(JSON.stringify({ search_term: searchText }));
 }
